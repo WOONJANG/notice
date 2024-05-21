@@ -122,7 +122,7 @@
             var sharedNote = '';
             noteContainers.forEach(function(container, index) {
                 var content = container.querySelector('.content-input').value;
-                sharedNote += `<div class="note-container"><p>${index + 1}. ${content}</p></div>`;
+                sharedNote += `<div class="note-container"><h1>${index + 1}. ${content}</h1></div>`;
             });
 
             sharedDate.textContent = date;
