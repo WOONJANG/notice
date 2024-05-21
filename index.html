@@ -39,8 +39,7 @@
         <input type="date" id="date">
         <button id="add-note-button" onclick="addNote()">Add Note</button>
         <div id="note-container"></div>
-        <!-- <input type="file" id="file-input" class="image-input"> -->
-<input type="file" id="file-input" class="image-input" onchange="previewImage()">
+        <input type="file" id="file-input" class="image-input" onchange="previewImage()">
 
         <button id="share-button" onclick="shareNote()">Share</button>
         <div id="shared-note" style="display: none;">
@@ -53,7 +52,7 @@
 
 
     <script>
-      // Function to get today's date in yyyy-mm-dd format
+        // Function to get today's date in yyyy-mm-dd format
         function getTodayDate() {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
@@ -116,17 +115,6 @@
             noteContainer.appendChild(newNote);
         }
 
-        function addNote() {
-            var noteContainer = document.getElementById('note-container');
-            var newNote = document.createElement('div');
-            newNote.classList.add('note-container');
-            newNote.innerHTML = `
-                <input type="text" class="content-input" placeholder="Write your note here...">
-                <br>
-            `;
-            noteContainer.appendChild(newNote);
-        }
-
         function shareNote() {
             var sharedDate = document.getElementById('shared-date');
             var sharedContent = document.getElementById('shared-content');
@@ -146,7 +134,8 @@
             // Save data to local storage
             var sharedData = {
                 date: date,
-                content: sharedNote
+                content: sharedNote,
+                image: document.getElementById('shared-image').src // Include image URL
             };
             localStorage.setItem('sharedData', JSON.stringify(sharedData));
 
@@ -164,23 +153,21 @@
 
             // Hide date input after sharing
             document.getElementById('date').style.display = 'none';
-
-
         }
 
-// Function to preview uploaded image
-    function previewImage() {
-        var fileInput = document.getElementById('file-input');
-        var imageElement = document.getElementById('shared-image');
-        var file = fileInput.files[0];
-        var reader = new FileReader();
+        // Function to preview uploaded image
+        function previewImage() {
+            var fileInput = document.getElementById('file-input');
+            var imageElement = document.getElementById('shared-image');
+            var file = fileInput.files[0];
+            var reader = new FileReader();
 
-        reader.onload = function(event) {
-            imageElement.src = event.target.result;
-        };
+            reader.onload = function(event) {
+                imageElement.src = event.target.result;
+            };
 
-        reader.readAsDataURL(file);
-    }
+            reader.readAsDataURL(file);
+        }
     </script>
 </body>
 </html>
