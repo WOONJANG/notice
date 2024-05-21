@@ -50,13 +50,16 @@
     </div>
 
     <script>
-        // Function to get today's date in yyyy-mm-dd format
+        // Function to get today's date in yyyy-mm-dd format and day of the week in Korean
         function getTodayDate() {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
             var yyyy = today.getFullYear();
-            return yyyy + '-' + mm + '-' + dd;
+            var day = today.getDay();
+            var weekdays = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+            var weekday = weekdays[day];
+            return yyyy + '-' + mm + '-' + dd + ' (' + weekday + ')';
         }
 
         // Set today's date to the date input field
