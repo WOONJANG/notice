@@ -53,7 +53,7 @@
 
 
     <script>
-        // Function to get today's date in yyyy-mm-dd format
+      // Function to get today's date in yyyy-mm-dd format
         function getTodayDate() {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
@@ -91,11 +91,30 @@
                 document.getElementById('file-input').style.display = 'none';
                 document.getElementById('share-button').style.display = 'none';
                 document.getElementById('date').style.display = 'none';
+                
+                // Load shared image
+                var sharedImage = sharedData.image;
+                if (sharedImage) {
+                    var imageElement = document.getElementById('shared-image');
+                    imageElement.src = sharedImage;
+                    imageElement.style.display = 'block'; // Show the image
+                }
             }
         }
 
         // Call loadSharedData on page load
         window.onload = loadSharedData;
+
+        function addNote() {
+            var noteContainer = document.getElementById('note-container');
+            var newNote = document.createElement('div');
+            newNote.classList.add('note-container');
+            newNote.innerHTML = `
+                <input type="text" class="content-input" placeholder="Write your note here...">
+                <br>
+            `;
+            noteContainer.appendChild(newNote);
+        }
 
         function addNote() {
             var noteContainer = document.getElementById('note-container');
