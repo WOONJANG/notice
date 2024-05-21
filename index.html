@@ -120,9 +120,9 @@
             var date = document.getElementById('date').value;
 
             var sharedNote = '';
-            noteContainers.forEach(function(container, index) {
+            noteContainers.forEach(function(container) {
                 var content = container.querySelector('.content-input').value;
-                sharedNote += `<div class="note-container"><p>${index + 1}. ${content}</p></div>`;
+                sharedNote += `<div class="note-container"><p>${content}</p></div>`;
             });
 
             sharedDate.textContent = date;
@@ -132,8 +132,7 @@
             // Save data to local storage
             var sharedData = {
                 date: date,
-                content: sharedNote,
-                image: document.getElementById('shared-image').src // Include image URL
+                content: sharedNote
             };
             localStorage.setItem('sharedData', JSON.stringify(sharedData));
 
@@ -151,6 +150,8 @@
 
             // Hide date input after sharing
             document.getElementById('date').style.display = 'none';
+
+
         }
 
         // Function to preview uploaded image
