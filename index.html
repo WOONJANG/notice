@@ -37,10 +37,10 @@
 <body>
     <div class="note">
         <input type="date" id="date">
-        <button id="add-note-button" onclick="addNote()">Add Note</button>
+        <button id="add-note-button" onclick="addNote()">알림 추가하기</button>
         <div id="note-container"></div>
        <!-- <input type="file" id="file-input" class="image-input" onchange="previewImage()"> -->
-        <button id="share-button" onclick="shareNote()">Share</button>
+        <button id="share-button" onclick="shareNote()">공유/복사</button>
         <div id="shared-note" style="display: none;">
             <h1 id="shared-date"></h1>
             <div id="shared-content"></div>
@@ -107,7 +107,7 @@
             var newNote = document.createElement('div');
             newNote.classList.add('note-container');
             newNote.innerHTML = `
-                <input type="text" class="content-input" placeholder="Write your note here...">
+                <input type="text" class="content-input" placeholder="내용을 추가하세요..">
                 <br>
             `;
             noteContainer.appendChild(newNote);
@@ -143,9 +143,9 @@
 
             // Copy shareable URL to clipboard
             navigator.clipboard.writeText(shareableUrl).then(function() {
-                alert("Shareable URL copied to clipboard!");
+                alert("복사 성공!");
             }).catch(function() {
-                alert("Failed to copy shareable URL to clipboard!");
+                alert("오류!");
             });
 
             // Hide date input after sharing
