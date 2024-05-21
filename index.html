@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shareable Note</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .note {
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        input[type="date"], input[type="text"] {
+            width: calc(50% - 5px);
+            margin-bottom: 10px;
+        }
+        input[type="file"] {
+            width: 45%;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+        .note-container {
+            margin-bottom: 10px;
+        }
+        #share-link {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="note">
+        <input type="date" id="date">
+        <button id="add-note-button" onclick="addNote()">Add Note</button>
+        <div id="note-container"></div>
+        <!-- <input type="file" id="file-input" class="image-input"> -->
+<input type="file" id="file-input" class="image-input" onchange="previewImage()">
+
+        <button id="share-button" onclick="shareNote()">Share</button>
+        <div id="shared-note" style="display: none;">
+            <h1 id="shared-date"></h1>
+            <div id="shared-content"></div>
+            <img id="shared-image" src="" alt="Uploaded Image">
+            <input type="text" id="share-link" readonly>
+        </div>
+    </div>
+
+
+    <script>
+        // Function to get today's date in yyyy-mm-dd format
+        function getTodayDate() {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+            var yyyy = today.getFullYear();
+            return yyyy + '-' + mm + '-' + dd;
+        }
+
+        // Set today's date to the date input field
+        document.getElementById('date').value = getTodayDate();
+
+        // Function to parse query parameters from URL
+        function parseQueryParams() {
+            var params = {};
+            var queryString = window.location.search.substring(1);
+            var pairs = queryString.split('&');
+            pairs.forEach(function(pair) {
+                var keyValue = pair.split('=');
+                params[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
+            });
+            return params;
+        }
+
+        // Function to load shared data from URL
+        function loadSharedData() {
+            var queryParams = parseQueryParams();
+            var sharedData = queryParams['data'];
+            if (sharedData) {
+                sharedData = JSON.parse(sharedData);
+                document.getElementById('date').value = sharedData.date;
+                document.getElementById('shared-date').textContent = sharedData.date;
+                document.getElementById('shared-content').innerHTML = sharedData.content;
+                document.getElementById('shared-note').style.display = 'block';
+                document.getElementById('add-note-button').style.display = 'none';
+                document.getElementById('file-input').style.display = 'none';
+                document.getElementById('share-button').style.display = 'none';
+                document.getElementById('date').style.display = 'none';
+            }
+        }
+
+        // Call loadSharedData on page load
+        window.onload = loadSharedData;
+
+        function addNote() {
+            var noteContainer = document.getElementById('note-container');
+            var newNote = document.createElement('div');
+            newNote.classList.add('note-container');
+            newNote.innerHTML = `
+                <input type="text" class="content-input" placeholder="Write your note here...">
+                <br>
+            `;
+            noteContainer.appendChild(newNote);
+        }
+
+        function shareNote() {
+            var sharedDate = document.getElementById('shared-date');
+            var sharedContent = document.getElementById('shared-content');
+            var noteContainers = document.querySelectorAll('.note-container');
+            var date = document.getElementById('date').value;
+
+            var sharedNote = '';
+            noteContainers.forEach(function(container) {
+                var content = container.querySelector('.content-input').value;
+                sharedNote += `<div class="note-container"><p>${content}</p></div>`;
+            });
+
+            sharedDate.textContent = date;
+            sharedContent.innerHTML = sharedNote;
+            document.getElementById('shared-note').style.display = 'block';
+
+            // Save data to local storage
+            var sharedData = {
+                date: date,
+                content: sharedNote
+            };
+            localStorage.setItem('sharedData', JSON.stringify(sharedData));
+
+            // Generate shareable URL
+            var url = window.location.href.split('?')[0]; // Remove existing query parameters
+            var query = encodeURIComponent(JSON.stringify(sharedData));
+            var shareableUrl = `${url}?data=${query}`;
+
+            // Copy shareable URL to clipboard
+            navigator.clipboard.writeText(shareableUrl).then(function() {
+                alert("Shareable URL copied to clipboard!");
+            }).catch(function() {
+                alert("Failed to copy shareable URL to clipboard!");
+            });
+
+            // Hide date input after sharing
+            document.getElementById('date').style.display = 'none';
+
+
+        }
+
+// Function to preview uploaded image
+    function previewImage() {
+        var fileInput = document.getElementById('file-input');
+        var imageElement = document.getElementById('shared-image');
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+            imageElement.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+    </script>
+</body>
+</html>
