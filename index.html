@@ -129,11 +129,10 @@
             sharedContent.innerHTML = sharedNote;
             document.getElementById('shared-note').style.display = 'block';
 
-            // Save data to local storage
+              // Save data to local storage
             var sharedData = {
                 date: date,
-                content: sharedNote,
-                //image: document.getElementById('shared-image').src // Include image URL
+                content: sharedNote
             };
             localStorage.setItem('sharedData', JSON.stringify(sharedData));
 
@@ -152,15 +151,6 @@
             // Hide date input after sharing
             document.getElementById('date').style.display = 'none';
         }
-        if (navigator.clipboard) {
-                navigator.clipboard.writeText(sharedLink).then(function() {
-                    alert("Link copied to clipboard!");
-                }).catch(function() {
-                    alert("Error copying link to clipboard!");
-                });
-            } else {
-                alert("Your browser does not support clipboard copying!");
-            }
         
         
 
