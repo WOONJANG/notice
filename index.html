@@ -39,17 +39,15 @@
         <input type="date" id="date">
         <button id="add-note-button" onclick="addNote()">Add Note</button>
         <div id="note-container"></div>
-        <!--<input type="file" id="file-input" class="image-input" onchange="previewImage()"> -->
-
+        <input type="file" id="file-input" class="image-input" onchange="previewImage()">
         <button id="share-button" onclick="shareNote()">Share</button>
         <div id="shared-note" style="display: none;">
             <h1 id="shared-date"></h1>
             <div id="shared-content"></div>
-            <!-- <img id="shared-image" src="" alt="Uploaded Image"> -->
+            <img id="shared-image" src="" alt="Uploaded Image">
             <input type="text" id="share-link" readonly>
         </div>
     </div>
-
 
     <script>
         // Function to get today's date in yyyy-mm-dd format
@@ -90,7 +88,7 @@
                 document.getElementById('file-input').style.display = 'none';
                 document.getElementById('share-button').style.display = 'none';
                 document.getElementById('date').style.display = 'none';
-                
+
                 // Load shared image
                 var sharedImage = sharedData.image;
                 if (sharedImage) {
@@ -122,9 +120,9 @@
             var date = document.getElementById('date').value;
 
             var sharedNote = '';
-            noteContainers.forEach(function(container) {
+            noteContainers.forEach(function(container, index) {
                 var content = container.querySelector('.content-input').value;
-                sharedNote += `<div class="note-container"><p>${content}</p></div>`;
+                sharedNote += `<div class="note-container"><p>${index + 1}. ${content}</p></div>`;
             });
 
             sharedDate.textContent = date;
